@@ -56,7 +56,8 @@ fn main() {
                 }
             }
             if check_game(*board) {
-                println!("you did it: score {}", score(*board, drawn_num));
+                let score_num = score(*board, drawn_num);
+                println!("you did it: score {} {}", score_num, drawn_num);
                 break 'outer;
             }
         }
