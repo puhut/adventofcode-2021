@@ -7,18 +7,19 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     let filename = &args[1];
-    const MAX_DAY: i32 = 80;
+    const MAX_DAY: i32 = 256;
     println!("In file {}", filename);
 
     if let Ok(lines) = read_lines(filename) {
         for line in lines {
             if let Ok(line_of_lanternfish) = line {
-                let mut lanternfish : Vec<i32> = line_of_lanternfish.split(",")
+                /*
+                let mut lanternfish : Vec<u8> = line_of_lanternfish.split(",")
                                                 .filter_map(|w| w.parse().ok())
                                                 .collect();
                 println!("{:?}", lanternfish);
                 for day in 1..(MAX_DAY + 1) {
-                    let mut nextday_lanternfish : Vec<i32> = Vec::new();
+                    let mut nextday_lanternfish : Vec<u8> = Vec::new();
                     for fish in lanternfish {
                         match fish {
                             0 => {
@@ -31,9 +32,27 @@ fn main() {
                     lanternfish = nextday_lanternfish;
                     println!("day {}: {}", day, lanternfish.len())
                 }
+                */
+
+                //better version
+                let mut lanternfish_population = [0_u64; 9];
+                for tick in line_of_lanternfish.split(",").map(|w| w.parse::<usize>().unwrap()) {
+                    lanternfish_population[tick] += 1;
+                }
+
+                println!("day {}: {}", 80, count_lanternfish(lanternfish_population, 80));
+                println!("day {}: {}", 256, count_lanternfish(lanternfish_population, 256));
             }
         }
     }
+}
+
+fn count_lanternfish(mut lanternfish_population: [u64;9], day: usize) -> u64 {
+    for _ in 0..day {
+        lanternfish_population.rotate_left(1);
+        lanternfish_population[6] += lanternfish_population[8];
+    }
+    lanternfish_population.into_iter().sum()
 }
 
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>> where P: AsRef<Path>, {
