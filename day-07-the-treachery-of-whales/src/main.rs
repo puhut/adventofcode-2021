@@ -13,6 +13,7 @@ fn main() {
     if let Ok(lines) = read_lines(filename) {
         for line in lines {
             if let Ok(line_of_crabs) = line {
+                /*
                 let position_of_crabs : Vec<i32> = line_of_crabs.split(",").filter_map(|x| x.parse().ok()).collect();
                 println!("{:?}", position_of_crabs);
 
@@ -23,9 +24,10 @@ fn main() {
                     }
                     position_sum_board.insert(*p1, sum);
                 }
-                /* bonus
+                */
+                /* bonus */
                 let position_of_crabs : Vec<i32> = line_of_crabs.split(",").filter_map(|x| x.parse().ok()).collect();
-                for p1 in 0..1856 {
+                for p1 in 0..=*position_of_crabs.iter().max().unwrap() {
                     let mut sum = 0;
                     for p2 in &position_of_crabs {
                         let v = i32::abs(p1-p2);
@@ -34,7 +36,7 @@ fn main() {
                     }
                     position_sum_board.insert(p1, sum);
                 }
-                */
+                /**/
             }
         }
     }
